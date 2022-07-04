@@ -1,42 +1,26 @@
-import React, { useRef, useEffect, useState } from 'react';
-import mapboxgl from 'mapbox-gl';
+import {BrowserRouter as Router ,Route , Routes} from 'react-router-dom'
 
-mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_API;
+
+import Companies from './pages/Companies';
+import Company from './pages/Company';
+import Map from './pages/Map';
+
+
+
 function App() {
 
-const mapContainer = useRef(null);
-const map = useRef(null);
-const [lng, setLng] = useState(-73.5634);
-const [lat, setLat] = useState(45.4979);
-const [zoom, setZoom] = useState(12.73);
+return(
+<div className="App">
 
-useEffect(() => {
-  if (map.current) return; // initialize map only once
-  map.current = new mapboxgl.Map({
-  container: mapContainer.current,
-  style: 'mapbox://styles/mapbox/dark-v10',
-  center: [lng, lat],
-  zoom: zoom
-  });
-  });
-   
-  useEffect(() => {
-  if (!map.current) return; // wait for map to initialize
-  map.current.on('move', () => {
-  setLng(map.current.getCenter().lng.toFixed(4));
-  setLat(map.current.getCenter().lat.toFixed(4));
-  setZoom(map.current.getZoom().toFixed(2));
-  });
-  });
-   
-  return (
-  <div>
-  <div className="sidebar">
-  Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
-  </div>
-  <div ref={mapContainer} className="map-container" />
-  </div>
-  );
+      <Routes>
+        <Route path="/" element={<Map />} />
+        <Route path="/data" element={<Companies />} />
+        <Route path="/data/:id" element={<Company />} />
+      </Routes>
+
+</div>
+);
+
 }
 
 export default App;
